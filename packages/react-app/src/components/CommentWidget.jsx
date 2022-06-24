@@ -12,7 +12,7 @@ import BurnerWalletIconPNG from "../assets/burner-wallet.png";
 import { Button } from "./Button";
 import { useUserSigner } from "../hooks";
 import { INFURA_ID, NETWORKS } from "../constants";
-import { firebaseLogin,firebaseLoginWithUnstoppable } from "../utils/auth";
+import { firebaseLogin, firebaseLoginWithUnstoppable } from "../utils/auth";
 import { auth, firestore } from "../utils/firebase";
 import { signInWithCustomToken, signOut } from "@firebase/auth";
 import { collection, query, orderBy, onSnapshot, doc, setDoc, addDoc, getDoc } from "@firebase/firestore";
