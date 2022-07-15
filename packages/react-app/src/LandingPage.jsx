@@ -1,9 +1,7 @@
 import { useState } from "react";
 import Icon, { CaretRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import LogoImage from "./assets/logo.png";
-import { CopyBlock } from "react-code-blocks";
-import { Input } from "antd";
+import CommentWidget from "./components/CommentWidget";
 
 const Container = styled.div`
   width: 600px;
@@ -97,9 +95,7 @@ const LandingPage = () => {
   return (
     <Container>
       <Logo>
-        <div>
-          🌥
-        </div>
+        <div>🌥</div>
         <h1>
           <b>Sky</b>Comment
         </h1>
@@ -108,7 +104,8 @@ const LandingPage = () => {
         <h2>About SkyComment</h2>
         <div>
           <p>
-            SkyComment is a fully decentralized comments widget implemented and designed for the Skynet Community, lets visitors leave comments on your website with their MySky identity.
+            SkyComment is a fully decentralized comments widget implemented and designed for the Skynet Community, lets
+            visitors leave comments on your website with their MySky identity.
           </p>
           <p>
             <a href="https://github.com/chunza2542/skycomment#why-skycomment" target="_blank">
@@ -124,9 +121,7 @@ const LandingPage = () => {
               </a>
               )
             </li>
-            <li>
-              Sign-in with your non-custodial MySky accounts (No Facebook, Google, or Twitter accounts needed 🙅‍♀️)
-            </li>
+            <li>Sign-in with your non-custodial MySky accounts (No Facebook, Google, or Twitter accounts needed 🙅‍♀️)</li>
             <li>LaTex supported for commenting 🧮</li>
             <li>Everything is stored and hosted on Skynet decentralized infrastructure 💽</li>
           </p>
@@ -137,12 +132,7 @@ const LandingPage = () => {
       </Panel>
 
       <Try>👇 Try it yourself!</Try>
-
-      <div
-        dangerouslySetInnerHTML={{
-          __html: `<iframe src="${process.env.REACT_APP_DOMAIN_NAME}/embed?url=${process.env.REACT_APP_DOMAIN_NAME}" id="skycomment" width="100%" frameBorder="0"></iframe>`,
-        }}
-      />
+      <CommentWidget commentURL="" />
 
       <Footer>
         Crafted with <Icon component={HeartSvg} style={{ color: "hotpink" }} /> by{" "}
