@@ -54,6 +54,7 @@ const Profile = styled.div`
 // Skynet Client
 const client = new SkynetClient("https://siasky.net");
 const hostApp = "host-app.hns";
+let mySky = null;
 
 const CommentWidget = ({ commentURL }) => {
   const [username, setUsername] = useState("");
@@ -62,6 +63,13 @@ const CommentWidget = ({ commentURL }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState("");
+
+  const getMySky = async () => {
+    if (mySky === null) {
+      mySky = await client.loadMySky(hostApp);
+    }
+    return mySky;
+  };
 
   const handleSubmit = async () => {
     // setError("");
@@ -98,7 +106,7 @@ const CommentWidget = ({ commentURL }) => {
   const checkSignInWithMySkyID = async () => {
     try {
       setIsLoading(true);
-      const mySky = await client.loadMySky(hostApp);
+      const mySky = await getMySky();
       const loggedIn = await mySky.checkLogin();
 
       console.log("MySky ID Login Status =", loggedIn);
@@ -107,7 +115,7 @@ const CommentWidget = ({ commentURL }) => {
       // Add button action for login.
       if (!loggedIn) {
         document.getElementById("login-button").addEventListener("click", async e => {
-          const result = mySky.requestLoginAccess();
+          const result = await mySky.requestLoginAccess();
           console.log("requestLoginAccess result = ", result);
           setIsLoggedIn(result);
         });
@@ -122,7 +130,7 @@ const CommentWidget = ({ commentURL }) => {
   const signOut = async () => {
     try {
       setIsLoading(true);
-      const mySky = await client.loadMySky(hostApp);
+      const mySky = await getMySky();
       await mySky.logout();
       setIsLoggedIn(false);
     } catch (error) {
@@ -144,7 +152,7 @@ const CommentWidget = ({ commentURL }) => {
 
     (async () => {
       try {
-        const mySky = await client.loadMySky(hostApp);
+        const mySky = await getMySky();
         const { data, dataLink } = await mySky.getJSON(`${hostApp}/profile.json`);
         if (dataLink === null) {
           const username = generateUsername();
