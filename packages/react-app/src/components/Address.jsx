@@ -1,6 +1,5 @@
 import { Skeleton } from "antd";
 import React from "react";
-import { INFURA_ID } from "../constants";
 import { useLookupAddress } from "../hooks";
 
 const { ethers } = require("ethers");
@@ -33,7 +32,7 @@ const scaffoldEthProvider = navigator.onLine
   ? new ethers.providers.StaticJsonRpcProvider("https://rpc.scaffoldeth.io:48544")
   : null;
 const mainnetInfura = navigator.onLine
-  ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/" + INFURA_ID)
+  ? new ethers.providers.StaticJsonRpcProvider("https://mainnet.infura.io/v3/")
   : null;
 
 export default function Address(props) {

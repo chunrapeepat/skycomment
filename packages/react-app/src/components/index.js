@@ -19,4 +19,3 @@ export { default as Address } from "./Address";
 export { default as Comment } from "./Comment";
 export { default as Reply } from "./Reply";
 export { default as CommentEditor } from "./CommentEditor";
-export { default as CommentWidget } from "./CommentWidget";

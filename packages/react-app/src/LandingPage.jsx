@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Icon, { CaretRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import CommentWidget from "./components/CommentWidget";
+import CommentWidget from "./CommentWidget";
 
 const Container = styled.div`
   width: 600px;

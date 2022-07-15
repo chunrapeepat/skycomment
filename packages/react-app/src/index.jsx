@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Router from "./Router";
+import LandingPage from "./LandingPage";
 
+import "antd/dist/antd.css";
 import "./index.css";
 
-ReactDOM.render(<Router />, document.getElementById("root"));
+ReactDOM.render(<LandingPage />, document.getElementById("root"));
