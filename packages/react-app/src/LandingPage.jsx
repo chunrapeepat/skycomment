@@ -111,7 +111,7 @@ const LandingPage = () => {
             SkyComment is a fully decentralized comments widget implemented and designed for the Skynet Community, lets visitors leave comments on your website with their MySky identity.
           </p>
           <p>
-            <a href="https://github.com/chunza2542/ethtalk.app#why-ethtalk" target="_blank">
+            <a href="https://github.com/chunza2542/skycomment#why-skycomment" target="_blank">
               <CaretRightOutlined /> Why I created SkyComment?
             </a>
           </p>
@@ -119,7 +119,7 @@ const LandingPage = () => {
             <b>Features:</b>
             <li>
               Open source 🌍 (See{" "}
-              <a target="_blank" href="https://github.com/chunza2542/ethtalk.app#contribution">
+              <a target="_blank" href="https://github.com/chunza2542/skycomment#contribution">
                 contribution guide
               </a>
               )
@@ -130,8 +130,8 @@ const LandingPage = () => {
             <li>LaTex supported for commenting 🧮</li>
             <li>Everything is stored and hosted on Skynet decentralized infrastructure 💽</li>
           </p>
-          <a href="https://github.com/chunza2542/ethtalk.app" target="_blank">
-            <CaretRightOutlined /> Learn more about ETHTalk
+          <a href="https://github.com/chunza2542/skycomment" target="_blank">
+            <CaretRightOutlined /> Learn more about SkyComment
           </a>
         </div>
       </Panel>
@@ -140,7 +140,7 @@ const LandingPage = () => {
 
       <div
         dangerouslySetInnerHTML={{
-          __html: `<iframe src="${process.env.REACT_APP_DOMAIN_NAME}/embed?url=${process.env.REACT_APP_DOMAIN_NAME}" id="ethtalk" width="100%" frameBorder="0"></iframe>`,
+          __html: `<iframe src="${process.env.REACT_APP_DOMAIN_NAME}/embed?url=${process.env.REACT_APP_DOMAIN_NAME}" id="skycomment" width="100%" frameBorder="0"></iframe>`,
         }}
       />
 
