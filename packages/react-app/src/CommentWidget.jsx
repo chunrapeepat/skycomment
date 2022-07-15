@@ -4,8 +4,8 @@ import styled from "styled-components";
 import Icon, { CopyOutlined, FileDoneOutlined, LinkOutlined, LogoutOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Divider } from "antd";
 import { Button } from "./components/Button";
-import Address from "./components/Address";
 import Blockie from "./components/Blockie";
+import { SkynetClient } from "skynet-js";
 
 const DropdownItem = styled.div`
   display: flex;
@@ -50,10 +50,16 @@ const Profile = styled.div`
   }
 `;
 
+// Skynet Client
+const client = new SkynetClient("https://siasky.net");
+const hostApp = "host-app.hns";
+let mySky;
+
 const CommentWidget = ({ commentURL }) => {
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async () => {
@@ -87,6 +93,46 @@ const CommentWidget = ({ commentURL }) => {
     // }
     // setIsLoading(false);
   };
+
+  const checkSignInWithMySkyID = async () => {
+    try {
+      setIsLoading(true);
+      mySky = await client.loadMySky(hostApp);
+      const loggedIn = await mySky.checkLogin();
+
+      console.log("MySky ID Login Status =", loggedIn);
+      setIsLoggedIn(loggedIn);
+
+      // Add button action for login.
+      if (!loggedIn) {
+        document.getElementById("login-button").addEventListener("click", async e => {
+          const result = mySky.requestLoginAccess();
+          console.log("requestLoginAccess result = ", result);
+          setIsLoggedIn(result);
+        });
+      }
+    } catch (error) {
+      setError(error);
+    }
+
+    setIsLoading(false);
+  };
+
+  const signOut = async () => {
+    try {
+      setIsLoading(true);
+      await mySky.logout();
+      setIsLoggedIn(false);
+    } catch (error) {
+      setError(error);
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    checkSignInWithMySkyID();
+  }, []);
 
   const profileOptions = (
     <Menu>
@@ -128,7 +174,7 @@ const CommentWidget = ({ commentURL }) => {
         danger
         key="signout"
         onClick={() => {
-          signOutOfWeb3Modal();
+          signOut();
         }}
       >
         <DropdownItem>
@@ -141,12 +187,16 @@ const CommentWidget = ({ commentURL }) => {
 
   const commentEditorFooter = (
     <>
-      {true && <Button loading={isLoading}>Sign in with MySky ID</Button>}
-      {false && (
+      {!isLoggedIn && (
+        <Button id="login-button" loading={isLoading}>
+          Sign in with MySky ID
+        </Button>
+      )}
+      {isLoggedIn && (
         <PanelContainer>
           <Dropdown overlay={profileOptions} trigger={["click"]} placement="topRight">
             <Profile>
-              <Blockie address={publicAddress} size={7} />
+              <Blockie address={`TODO: Add username or address here`} size={7} />
             </Profile>
           </Dropdown>
           <Button loading={isLoading} onClick={isLoading ? () => {} : handleSubmit}>
