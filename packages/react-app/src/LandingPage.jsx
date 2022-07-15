@@ -18,13 +18,13 @@ const Logo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 50px 0;
+  margin: 30px 0;
   cursor: pointer;
 
-  & img {
-    height: 70px;
-    display: block;
-    margin-right: 15px;
+  & div {
+    font-size: 4rem;
+    margin-right: 18px;
+    transform: translateY(-6px);
   }
   & h1 {
     display: block;
@@ -89,29 +89,30 @@ const HeartSvg = () => (
 const LandingPage = () => {
   const [value, setValue] = useState(`${process.env.REACT_APP_DOMAIN_NAME}`);
 
-  const codeSnippet = `<iframe src="${process.env.REACT_APP_DOMAIN_NAME}/embed?url=${value}" id="ethtalk" width="100%" frameBorder="0"></iframe>
+  const codeSnippet = `<iframe src="${process.env.REACT_APP_DOMAIN_NAME}/embed?url=${value}" id="skycomment" width="100%" frameBorder="0"></iframe>
 
-<script>window.addEventListener("message",function(t){"string"==typeof t.data&&-1!=t.data.indexOf("height:")&&(document.getElementById("ethtalk").style.height=t.data.split(":")[1]+"px")});</script>
+<script>window.addEventListener("message",function(t){"string"==typeof t.data&&-1!=t.data.indexOf("height:")&&(document.getElementById("skycomment").style.height=t.data.split(":")[1]+"px")});</script>
 `;
 
   return (
     <Container>
       <Logo>
-        <img src={LogoImage} />
+        <div>
+          🌥
+        </div>
         <h1>
-          <b>ETH</b>Talk
+          <b>Sky</b>Comment
         </h1>
       </Logo>
       <Panel>
-        <h2>About ETHTalk</h2>
+        <h2>About SkyComment</h2>
         <div>
           <p>
-            EthTalk is a comments widget implemented and designed for the Ethereum ecosystem built on top of 🏗
-            Scaffold-ETH, lets visitors leave comments on your website with their non-custodial Ethereum account
+            SkyComment is a fully decentralized comments widget implemented and designed for the Skynet Community, lets visitors leave comments on your website with their MySky identity.
           </p>
           <p>
             <a href="https://github.com/chunza2542/ethtalk.app#why-ethtalk" target="_blank">
-              <CaretRightOutlined /> Why I created ETHTalk?
+              <CaretRightOutlined /> Why I created SkyComment?
             </a>
           </p>
           <p>
@@ -123,31 +124,15 @@ const LandingPage = () => {
               </a>
               )
             </li>
-            <li>ENS (Ethereum Name Service) supported 😎</li>
             <li>
-              Sign-in with your non-custodial Ethereum accounts (No Facebook, Google, or Twitter accounts needed 🙅‍♀️)
+              Sign-in with your non-custodial MySky accounts (No Facebook, Google, or Twitter accounts needed 🙅‍♀️)
             </li>
-            <li>🦊 MetaMask and 🔥 BurnerWallet supported</li>
             <li>LaTex supported for commenting 🧮</li>
-            <li>All the data is stored on Firebase Firestore 💽</li>
+            <li>Everything is stored and hosted on Skynet decentralized infrastructure 💽</li>
           </p>
           <a href="https://github.com/chunza2542/ethtalk.app" target="_blank">
             <CaretRightOutlined /> Learn more about ETHTalk
           </a>
-        </div>
-      </Panel>
-
-      <Panel>
-        <h2>Embed ETHTalk</h2>
-        <div>
-          Embed ETHTalk on your website is pretty simple, you can just copy the code snippet below, change the value in
-          the input to your website URL, and put it anywhere on your website.
-          <div style={{ marginTop: 15, marginBottom: 10 }}>
-            <Input value={value} onChange={e => setValue(e.target.value)} />
-          </div>
-          <div style={{ background: "rgb(250, 250, 250)", borderRadius: 7, overflow: "hidden" }}>
-            <CopyBlock theme="androidstudio" text={codeSnippet} language="html" showLineNumbers={10} wrapLines />
-          </div>
         </div>
       </Panel>
 

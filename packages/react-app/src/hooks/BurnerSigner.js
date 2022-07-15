@@ -11,7 +11,6 @@ export default function useBurnerSigner(provider) {
   const setValue = value => {
     try {
       setStoredValue(value);
-      // ETHTalk: skip access localStorage from iframe
       // window.localStorage.setItem(key, value);
     } catch (error) {
       console.log(error);

@@ -1,5 +1,5 @@
 {
-  "name": "ethtalk.app",
+  "name": "skycomment",
   "version": "1.0.0",
   "keywords": [
     "ethereum",
@@ -18,9 +18,9 @@
     "react-app:start": "yarn workspace @scaffold-eth/react-app start",
     "react-app:test": "yarn workspace @scaffold-eth/react-app test",
     "react-app:deploy": "yarn workspace @scaffold-eth/react-app deploy",
-    "firebase-api:start": "yarn workspace @ethtalk/firebase-api start",
-    "firebase-api:shell": "yarn workspace @ethtalk/firebase-api shell",
-    "firebase-api:deploy": "yarn workspace @ethtalk/firebase-api deploy"
+    "firebase-api:start": "yarn workspace @skycomment/firebase-api start",
+    "firebase-api:shell": "yarn workspace @skycomment/firebase-api shell",
+    "firebase-api:deploy": "yarn workspace @skycomment/firebase-api deploy"
   },
   "workspaces": {
     "packages": [

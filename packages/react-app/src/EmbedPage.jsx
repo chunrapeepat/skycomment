@@ -32,7 +32,7 @@ const EmbedPage = () => {
       <Footer>
         Powered by{" "}
         <a href={`${process.env.NODE_ENV === "development"?"http":"https"}://${document.domain}`} target="_blank">
-          ETHTalk
+          SkyComment
         </a>
       </Footer>
     </>

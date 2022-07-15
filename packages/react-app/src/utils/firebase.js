@@ -17,7 +17,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
-// ETHTalk: skip access localStorage from iframe
 const mockStorage = (() => {
   let store = {};
 
