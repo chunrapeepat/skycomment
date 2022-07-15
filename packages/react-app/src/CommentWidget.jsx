@@ -122,6 +122,7 @@ const CommentWidget = ({ commentURL }) => {
   const signOut = async () => {
     try {
       setIsLoading(true);
+      const mySky = await client.loadMySky(hostApp);
       await mySky.logout();
       setIsLoggedIn(false);
     } catch (error) {
