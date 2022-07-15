@@ -72,35 +72,30 @@ const CommentWidget = ({ commentURL }) => {
   };
 
   const handleSubmit = async () => {
-    // setError("");
-    // if (!value.trim()) return;
-    // if (value.length > 2000) {
-    //   setError("character limit exceeded (maximum: 2000 characters)");
-    //   return;
-    // }
-    // setIsLoading(true);
-    // try {
-    //   const commentBoxRef = doc(firestore, "comment-boxes", hashURL(commentURL));
-    //   const commentBox = await getDoc(commentBoxRef);
-    //   if (!commentBox.exists()) {
-    //     await setDoc(commentBoxRef, {
-    //       commentURL,
-    //       createdAt: new Date(),
-    //     });
-    //   }
-    //   const commentRef = collection(firestore, "comment-boxes", hashURL(commentURL), "comments");
-    //   await addDoc(commentRef, {
-    //     data: value.trim(),
-    //     likes: [],
-    //     authorPublicAddress: publicAddress,
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //   });
-    //   setValue("");
-    // } catch (e) {
-    //   setError(e.message);
-    // }
-    // setIsLoading(false);
+    setError("");
+    if (!value.trim()) return;
+    if (value.length > 2000) {
+      setError("character limit exceeded (maximum: 2000 characters)");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      setComments([
+        ...comments,
+        {
+          data: value.trim(),
+          likes: [],
+          publicAddress: username,
+          authorPublicAddress: username,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ]);
+      setValue("");
+    } catch (e) {
+      setError(e.message);
+    }
+    setIsLoading(false);
   };
 
   const checkSignInWithMySkyID = async () => {
@@ -206,7 +201,7 @@ const CommentWidget = ({ commentURL }) => {
         <PanelContainer>
           <Dropdown overlay={profileOptions} trigger={["click"]} placement="topRight">
             <Profile>
-              <Blockie address={`TODO: Add username or address here`} size={7} />
+              <Blockie address={username || "default"} size={7} />
             </Profile>
           </Dropdown>
           <Button loading={isLoading} onClick={isLoading ? () => {} : handleSubmit}>

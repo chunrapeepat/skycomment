@@ -5,7 +5,6 @@ import moment from "moment";
 import { LikeTwoTone, LikeOutlined } from "@ant-design/icons";
 import Blockie from "./Blockie";
 import Address from "./Address";
-import { doc, addDoc, onSnapshot, updateDoc, deleteDoc, collection, query, orderBy } from "@firebase/firestore";
 import CommentEditor from "./CommentEditor";
 import { Button, OutlineButton } from "./Button";
 import Reply from "./Reply";
@@ -75,25 +74,24 @@ const PanelContainer = styled.div`
   align-items: center;
 `;
 
-const Comment = ({ id, authorPublicAddress, createdAt, data, commentURL }) => {
+const Comment = ({ id, publicAddress, authorPublicAddress, createdAt, data, commentURL }) => {
   const [likes, setLikes] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [isReply, setIsReply] = useState(false);
   const [replyValue, setReplyValue] = useState("");
   const [editedValue, setEditedValue] = useState(data);
   const [replyError, setReplyError] = useState();
-  const { publicAddress } = useFirebaseAuth();
   const [replies, setReplies] = useState([]);
 
-  // load all replies
-  useEffect(() => {
-    const replyCollectionRef = collection(firestore, "comment-boxes", hashURL(commentURL), "comments", id, "replies");
-    const q = query(replyCollectionRef, orderBy("createdAt", "asc"));
+  // // load all replies
+  // useEffect(() => {
+  //   const replyCollectionRef = collection(firestore, "comment-boxes", hashURL(commentURL), "comments", id, "replies");
+  //   const q = query(replyCollectionRef, orderBy("createdAt", "asc"));
 
-    onSnapshot(q, snapshot => {
-      setReplies(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    });
-  }, []);
+  //   onSnapshot(q, snapshot => {
+  //     setReplies(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+  //   });
+  // }, []);
 
   const like = async () => {
     if (!publicAddress) return;
@@ -107,29 +105,29 @@ const Comment = ({ id, authorPublicAddress, createdAt, data, commentURL }) => {
     }
     setLikes(_likes);
 
-    try {
-      const commentDocRef = doc(firestore, "comment-boxes", hashURL(commentURL), "comments", id);
-      await updateDoc(commentDocRef, {
-        likes: _likes,
-        updatedAt: new Date(),
-      });
-    } catch (e) {
-      setLikes(prevLikes);
-    }
+    // try {
+    //   const commentDocRef = doc(firestore, "comment-boxes", hashURL(commentURL), "comments", id);
+    //   await updateDoc(commentDocRef, {
+    //     likes: _likes,
+    //     updatedAt: new Date(),
+    //   });
+    // } catch (e) {
+    //   setLikes(prevLikes);
+    // }
   };
 
-  useEffect(() => {
-    const commentDocRef = doc(firestore, "comment-boxes", hashURL(commentURL), "comments", id);
-    onSnapshot(commentDocRef, snapshot => {
-      if (snapshot.data()) {
-        setLikes(snapshot.data().likes);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   const commentDocRef = doc(firestore, "comment-boxes", hashURL(commentURL), "comments", id);
+  //   onSnapshot(commentDocRef, snapshot => {
+  //     if (snapshot.data()) {
+  //       setLikes(snapshot.data().likes);
+  //     }
+  //   });
+  // }, []);
 
   const deleteComment = () => {
-    const commentDocRef = doc(firestore, "comment-boxes", hashURL(commentURL), "comments", id);
-    deleteDoc(commentDocRef);
+    // const commentDocRef = doc(firestore, "comment-boxes", hashURL(commentURL), "comments", id);
+    // deleteDoc(commentDocRef);
   };
 
   const editEditorFooter = (
@@ -184,20 +182,20 @@ const Comment = ({ id, authorPublicAddress, createdAt, data, commentURL }) => {
               return;
             }
 
-            try {
-              const replyRef = collection(firestore, "comment-boxes", hashURL(commentURL), "comments", id, "replies");
-              await addDoc(replyRef, {
-                data: replyValue.trim(),
-                likes: [],
-                authorPublicAddress: publicAddress,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              });
-              setReplyValue("");
-              setIsReply(false);
-            } catch (e) {
-              setReplyError(e.message);
-            }
+            // try {
+            //   const replyRef = collection(firestore, "comment-boxes", hashURL(commentURL), "comments", id, "replies");
+            //   await addDoc(replyRef, {
+            //     data: replyValue.trim(),
+            //     likes: [],
+            //     authorPublicAddress: publicAddress,
+            //     createdAt: new Date(),
+            //     updatedAt: new Date(),
+            //   });
+            //   setReplyValue("");
+            //   setIsReply(false);
+            // } catch (e) {
+            //   setReplyError(e.message);
+            // }
           }}
         >
           Update
@@ -275,8 +273,8 @@ const Comment = ({ id, authorPublicAddress, createdAt, data, commentURL }) => {
           </>
         }
         datetime={
-          <Tooltip title={moment(createdAt.toDate()).format("YYYY-MM-DD HH:mm:ss")}>
-            <span>{moment(createdAt.toDate()).fromNow()}</span>
+          <Tooltip title={moment(createdAt.toLocaleString()).format("YYYY-MM-DD HH:mm:ss")}>
+            <span>{moment(createdAt.toLocaleString()).fromNow()}</span>
           </Tooltip>
         }
       >
