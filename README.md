@@ -1,5 +1,5 @@
 # 🌥 SkyComment
-SkyComment is a fully decentralized comments widget implemented and designed for the Skynet Community, lets visitors leave comments on your website with their MySky identity.
+SkyComment is a fully decentralized comments widget implemented and designed for the [Skynet](https://skynetlabs.com/) Community, lets visitors leave comments on your website with their MySky identity.
 
 ### Why SkyComment?
 Basically, for commenting on any website, you need to have a Facebook or Google accounts, or sometimes you need to register a new account with a new username/password which may have a few problems:
@@ -36,7 +36,7 @@ yarn react-app:start
 5. Experiment and develop your AWESOME 😎 features
 
 ### Tech stack
-- Frontend: React, Antd.
+- Frontend: React, Antd, Skynet Browser JS.
 - Backend: Skynet Hosting, Skynet Handshake, MySky & DAC.
 
 ---
