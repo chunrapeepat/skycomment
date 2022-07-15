@@ -1,11 +1,12 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Comment, CommentEditor } from "./components/index";
 import styled from "styled-components";
-import Icon, { CopyOutlined, FileDoneOutlined, LinkOutlined, LogoutOutlined } from "@ant-design/icons";
+import Icon, { CopyOutlined, FileDoneOutlined, LinkOutlined, LogoutOutlined, SettingOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Divider } from "antd";
 import { Button } from "./components/Button";
 import Blockie from "./components/Blockie";
 import { SkynetClient } from "skynet-js";
+import { generateUsername } from "unique-username-generator";
 
 const DropdownItem = styled.div`
   display: flex;
@@ -53,9 +54,9 @@ const Profile = styled.div`
 // Skynet Client
 const client = new SkynetClient("https://siasky.net");
 const hostApp = "host-app.hns";
-let mySky;
 
 const CommentWidget = ({ commentURL }) => {
+  const [username, setUsername] = useState("");
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +98,7 @@ const CommentWidget = ({ commentURL }) => {
   const checkSignInWithMySkyID = async () => {
     try {
       setIsLoading(true);
-      mySky = await client.loadMySky(hostApp);
+      const mySky = await client.loadMySky(hostApp);
       const loggedIn = await mySky.checkLogin();
 
       console.log("MySky ID Login Status =", loggedIn);
@@ -134,41 +135,41 @@ const CommentWidget = ({ commentURL }) => {
     checkSignInWithMySkyID();
   }, []);
 
+  // load username (if username not setted: generate new username)
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+
+    (async () => {
+      try {
+        const mySky = await client.loadMySky(hostApp);
+        const { data, dataLink } = await mySky.getJSON(`${hostApp}/profile.json`);
+        if (dataLink === null) {
+          const username = generateUsername();
+          const { data } = await mySky.setJSON(`${hostApp}/profile.json`, { username });
+          setUsername(data.username);
+        } else {
+          setUsername(data.username);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    })();
+  }, [isLoggedIn]);
+
   const profileOptions = (
     <Menu>
-      {/* <Menu.Item key="address">
-        <DropdownItem disabled>
-          <Address address={publicAddress} />
+      <Menu.Item key="address">
+        <DropdownItem disabled>Username: {username}</DropdownItem>
+      </Menu.Item>
+      {/* <Menu.Divider />
+      <Menu.Item key="2">
+        <DropdownItem>
+          <SettingOutlined />
+          <div>Profile Setting</div>
         </DropdownItem>
       </Menu.Item> */}
-      <Menu.Divider />
-      <Menu.Item
-        key="0"
-        onClick={() => {
-          // copyToClipboard(publicAddress);
-        }}
-      >
-        <DropdownItem>
-          <CopyOutlined />
-          <div>Copy Address to Clipboard</div>
-        </DropdownItem>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <a target="_blank" href={`https://etherscan.io/address/}`}>
-          <DropdownItem>
-            <LinkOutlined />
-            <div>Open in Etherscan</div>
-          </DropdownItem>
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <a target="_blank" href="https://app.ens.domains/">
-          <DropdownItem>
-            <FileDoneOutlined />
-            <div>Register ENS Domain</div>
-          </DropdownItem>
-        </a>
-      </Menu.Item>
       <Menu.Divider />
       <Menu.Item
         danger
@@ -209,7 +210,7 @@ const CommentWidget = ({ commentURL }) => {
 
   return (
     <>
-      <h3>10 comments</h3>
+      <h3>{comments.length} comments</h3>
       <div style={{ marginTop: 24 }}>
         {comments.map((comment, i) => {
           return <Comment commentURL={commentURL} {...comment} key={`comment_${i}`} />;
