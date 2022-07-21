@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Comment, CommentEditor } from "./components/index";
 import styled from "styled-components";
-import Icon, { CopyOutlined, FileDoneOutlined, LinkOutlined, LogoutOutlined, SettingOutlined } from "@ant-design/icons";
+import Icon, { LogoutOutlined, SettingOutlined } from "@ant-design/icons";
 import { Menu, Dropdown, Divider } from "antd";
 import { Button } from "./components/Button";
 import Blockie from "./components/Blockie";
 import { SkynetClient } from "skynet-js";
 import { generateUsername } from "unique-username-generator";
+import { Modal } from "antd";
 
 const DropdownItem = styled.div`
   display: flex;
@@ -50,6 +51,19 @@ const Profile = styled.div`
     border-radius: 3px;
   }
 `;
+const Input = styled.input`
+  width: 100%;
+  border: 0;
+  outline: none;
+  padding: 7px;
+  border-bottom: 1px solid #ddd;
+  resize: none;
+
+  &:disabled {
+    background: white;
+    cursor: not-allowed;
+  }
+`;
 
 // Skynet Client
 const client = new SkynetClient("https://siasky.net");
@@ -58,11 +72,13 @@ let mySky = null;
 
 const CommentWidget = ({ commentURL }) => {
   const [username, setUsername] = useState("");
+  const [usernameSettingValue, setUsernameSettingValue] = useState("");
   const [comments, setComments] = useState([]);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState("");
+  const [isProfileSettingModalOpen, setIsProfileSettingModalOpen] = useState(false);
 
   const getMySky = async () => {
     if (mySky === null) {
@@ -167,13 +183,13 @@ const CommentWidget = ({ commentURL }) => {
       <Menu.Item key="address">
         <DropdownItem disabled>Username: {username}</DropdownItem>
       </Menu.Item>
-      {/* <Menu.Divider />
-      <Menu.Item key="2">
+      <Menu.Divider />
+      <Menu.Item key="2" onClick={() => setIsProfileSettingModalOpen(true)}>
         <DropdownItem>
           <SettingOutlined />
           <div>Profile Setting</div>
         </DropdownItem>
-      </Menu.Item> */}
+      </Menu.Item>
       <Menu.Divider />
       <Menu.Item
         danger
@@ -214,6 +230,35 @@ const CommentWidget = ({ commentURL }) => {
 
   return (
     <>
+      <Modal
+        title="Profile Setting"
+        visible={isProfileSettingModalOpen}
+        onOk={async () => {
+          if (!usernameSettingValue) return;
+
+          try {
+            const mySky = await getMySky();
+            const { data, dataLink } = await mySky.getJSON(`${hostApp}/profile.json`);
+            if (dataLink !== null && data !== null) {
+              const { data } = await mySky.setJSON(`${hostApp}/profile.json`, { username: usernameSettingValue });
+              setUsername(data.username);
+            }
+          } catch (error) {
+            setError(error);
+          }
+
+          setUsernameSettingValue("");
+          setIsProfileSettingModalOpen(false);
+        }}
+        onCancel={() => setIsProfileSettingModalOpen(false)}
+      >
+        <Input
+          value={usernameSettingValue}
+          onChange={e => setUsernameSettingValue(e.target.value)}
+          placeholder="Username"
+        />
+      </Modal>
+
       <h3>{comments.length} comments</h3>
       <div style={{ marginTop: 24 }}>
         {comments.map((comment, i) => {
